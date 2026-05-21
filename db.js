@@ -1,5 +1,7 @@
 const mysql = require('mysql2');
 
+const mysql = require('mysql2');
+
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -11,12 +13,12 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
+const promisePool = pool.promise();
 
 async function query(sql, params = []) {
-  const [rows] = await pool.execute(sql, params);
+  const [rows] = await promisePool.execute(sql, params);
   return rows;
 }
-
 // ─── USERS ───────────────────────────────────────────────────
 const getUsers = () => query(
   "SELECT id,nome,email,nivel,estado,avatar,criadoem FROM users ORDER BY nome"
